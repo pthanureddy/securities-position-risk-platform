@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package market.events.v1;
+
+option java_multiple_files = true;
+option java_package = "com.pthanureddy.markets.contract.v1";
+
+message ExecutionAccepted {
+  int32 schema_version = 1;
+  string event_id = 2;
+  string execution_id = 3;
+  string account_id = 4;
+  string instrument = 5;
+  string asset_class = 6;
+  string side = 7;
+  string quantity = 8;
+  string price = 9;
+  string currency = 10;
+  string executed_at = 11;
+  string signed_quantity = 12;
+  string net_notional = 13;
+  bool limit_breached = 14;
+}
+

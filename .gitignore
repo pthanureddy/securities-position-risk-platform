@@ -1,0 +1,11 @@
+.idea/
+.vscode/
+backend/target/
+web/node_modules/
+web/dist/
+web/coverage/
+*.log
+.env
+.terraform/
+*.tfstate*
+
