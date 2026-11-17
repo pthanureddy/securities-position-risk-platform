@@ -57,7 +57,7 @@ consistency boundary. See [architecture](docs/ARCHITECTURE.md),
 | --- | --- |
 | Java backend | 21 tests; 88.08% line coverage; 100% branch coverage |
 | React/TypeScript web | 18 tests; 80.30% line coverage; 72.22% branch coverage |
-| Frontend production bundle | 198.90 kB JavaScript raw / 62.62 kB gzip |
+| Frontend production bundle | 198.76 kB JavaScript raw / 62.56 kB gzip |
 | Dependency audit | 0 known vulnerabilities at build time |
 | Delivery | Maven, ESLint, TypeScript, Vitest, Terraform, Compose, Docker, Pages CI |
 
@@ -82,7 +82,8 @@ Open `http://localhost:5173/?demo=true`.
 The default profile uses H2 and disables Kafka and Redis adapters:
 
 ```bash
-mvn --batch-mode -pl backend -am spring-boot:run
+mvn --batch-mode package
+java -jar backend/target/backend-0.1.0.jar
 ```
 
 Open `http://localhost:8080/actuator/health`.
@@ -133,6 +134,13 @@ npm run build
 
 CI additionally formats and validates Terraform, checks the Compose model, and
 builds both production container images.
+
+Reverified on 17 November 2026 with Java 17 and Node.js 24. The frontend lockfile
+was refreshed to patched Vite, Vitest, ESLint, and TypeScript ESLint releases;
+`npm audit` reported no known vulnerabilities at that time. This is an npm audit
+result, not a claim that the whole system has undergone a security assessment.
+The Maven package is an executable Spring Boot jar; CI starts it and checks its
+readiness endpoint so a container build alone cannot hide a missing boot manifest.
 
 ## Deployment boundaries
 

@@ -20,6 +20,19 @@ jobs:
           cache: maven
       - name: Verify Java service
         run: mvn --batch-mode verify
+      - name: Smoke executable service package
+        run: |
+          java -jar backend/target/backend-0.1.0.jar --server.port=18080 > /tmp/market-package.log 2>&1 &
+          service_pid=$!
+          trap 'kill "$service_pid" 2>/dev/null || true' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://localhost:18080/actuator/health/readiness; then
+              exit 0
+            fi
+            sleep 2
+          done
+          cat /tmp/market-package.log
+          exit 1
 
   web:
     runs-on: ubuntu-latest
